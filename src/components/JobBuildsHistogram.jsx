@@ -28,8 +28,12 @@ class JobBuildsHistogram extends Component {
     }
 
     render() {
-        const { job }    = this.props;
+        let { job, title }    = this.props;
         const { builds } = this.state;
+
+        // title is optional property. If not specified, job string will be rendered (may be ugly)
+        if(!title)
+            title = job;
 
         // converts to format required by BarChart component
         const data = builds.map(build => ({
@@ -51,7 +55,7 @@ class JobBuildsHistogram extends Component {
         return (
             <div>
                 <div className="widget__header">
-                    Jenkins <span className="widget__header__subject">{job}</span> builds
+                    <span className="widget__header__subject">{title}</span> builds
                     <i className="fa fa-bug"/>
                 </div>
                 <div className="widget__body">
