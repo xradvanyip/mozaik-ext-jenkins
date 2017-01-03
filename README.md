@@ -35,6 +35,12 @@ key                 | env key                         | required | description  
 }
 ```
 
+### job identifiers
+
+- Use `job: 'my-job'` property in client widgets configuration to identify job item **my-job** located in default Jenkins workspace.
+
+- Use `job: 'my-folder/my-job'` to identify job item **my-job** located in folder **my-folder**, which is in default Jenkins workspace.
+
 
 
 ## Jenkins Job Builds

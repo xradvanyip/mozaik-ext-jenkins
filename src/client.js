@@ -64,6 +64,12 @@ const client = mozaik => {
             ;
         },
 
+        jobsOfFolder(params) {
+            return buildRequest(`/job/${ params.jobFolderPart }/api/json?tree=jobs[name,lastBuild[number,building,timestamp,result]]&pretty=true`)
+                .then(res => res.body.jobs)
+            ;
+        },
+
         job(params) {
             return buildRequest(`/job/${ params.job }/api/json?pretty=true&depth=10&tree=builds[number,duration,result,builtOn,timestamp,id,building,url]`)
                 .then(res => res.body.builds)

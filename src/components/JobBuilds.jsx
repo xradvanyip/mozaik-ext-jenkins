@@ -3,6 +3,7 @@ import reactMixin                      from 'react-mixin';
 import { ListenerMixin }               from 'reflux';
 import Mozaik                          from 'mozaik/browser';
 import JobBuild                        from './JobBuild.jsx';
+import jenkinsUtil                     from './../common/jenkins-util';
 
 
 class JobBuilds extends Component {
@@ -27,12 +28,22 @@ class JobBuilds extends Component {
 
     render() {
         const { builds } = this.state;
-        const { title }  = this.props;
+        const { job, title }  = this.props;
+
+        const finalTitle = title ? (
+            <span>{title}</span>
+        ) : (
+            <span>
+                Jenkins <span className="widget__header__subject">{ jenkinsUtil.getShortJobName(job) }</span> builds
+            </span>
+        );
+        
+        title : jenkinsUtil.getShortJobName(job);
 
         return (
             <div>
                 <div className="widget__header">
-                    {title}
+                    {finalTitle}
                     <span className="widget__header__count">
                         {builds.length}
                     </span>
@@ -51,12 +62,8 @@ class JobBuilds extends Component {
 JobBuilds.displayName = 'JobBuilds';
 
 JobBuilds.propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     job:   PropTypes.string.isRequired
-};
-
-JobBuilds.defaultProps = {
-    title: 'Jenkins job builds'
 };
 
 reactMixin(JobBuilds.prototype, ListenerMixin);

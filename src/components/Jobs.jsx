@@ -1,18 +1,39 @@
-import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
-import reactMixin           from 'react-mixin';
-import { ListenerMixin }    from 'reflux';
-import Mozaik               from 'mozaik/browser';
-import JobItem              from './JobItem.jsx';
+import React, { Component, PropTypes }  from 'react'; // eslint-disable-line no-unused-vars
+import reactMixin                       from 'react-mixin';
+import { ListenerMixin }                from 'reflux';
+import Mozaik                           from 'mozaik/browser';
+import JobItem                          from './JobItem.jsx';
+import jenkinsUtil                      from './../common/jenkins-util';
 
 
 class Jobs extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { jobs: [] };
+        this.state = { 
+            jobs: [],
+            title: 'Jenkins'
+        };
+
+        const { job } = props;
+
+        if(job && jenkinsUtil.containsDirPart(job)) {
+            this.state.title = `${jenkinsUtil.getFolderPart(job)}/`;    // this.setState() would cause unnecessry re-render
+        }
     }
 
     getApiRequest() {
+        const { job } = this.props;
+
+        if(job && jenkinsUtil.containsDirPart(job)) {
+            const jobFolderPart = jenkinsUtil.getFolderPart(job);
+
+            return {
+                id: 'jenkins.jobsOfFolder',
+                params: { jobFolderPart }
+            };
+        }
+
         return { id: 'jenkins.jobs' };
     }
 
@@ -21,12 +42,12 @@ class Jobs extends Component {
     }
 
     render() {
-        const { jobs } = this.state;
+        const { title, jobs } = this.state;
 
         return (
             <div>
                 <div className="widget__header">
-                    Jenkins jobs
+                    <span className="widget__header__subject">{title} </span>jobs
                     <span className="widget__header__count">
                         {jobs.length}
                     </span>
@@ -43,6 +64,11 @@ class Jobs extends Component {
 }
 
 Jobs.displayName = 'Jobs';
+
+Jobs.propTypes = {
+    job:    PropTypes.string
+};
+
 
 reactMixin(Jobs.prototype, ListenerMixin);
 reactMixin(Jobs.prototype, Mozaik.Mixin.ApiConsumer);

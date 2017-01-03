@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'; // eslint-disable-line no-u
 import reactMixin                      from 'react-mixin';
 import { ListenerMixin }               from 'reflux';
 import Mozaik                          from 'mozaik/browser';
+import jenkinsUtil                      from './../common/jenkins-util';
 const { BarChart }                     = Mozaik.Component;
 
 
@@ -15,9 +16,11 @@ class JobBuildsHistogram extends Component {
     getApiRequest() {
         const { job } = this.props;
 
+        const jobApiURLpart = jenkinsUtil.fitApiURL(job);
+
         return {
             id:     `jenkins.job.${ job }`,
-            params: { job }
+            params: { job: jobApiURLpart }
         };
     }
 
@@ -28,12 +31,11 @@ class JobBuildsHistogram extends Component {
     }
 
     render() {
-        let { job, title }    = this.props;
+        const { job }    = this.props;
         const { builds } = this.state;
 
-        // title is optional property. If not specified, job string will be rendered (may be ugly)
-        if(!title)
-            title = job;
+        const title = jenkinsUtil.getShortJobName(job);     // displays only name of jenkins job located in innermost eventual folder
+        // const title = job;   // displays whole path to jenkins job (with eventual folders)
 
         // converts to format required by BarChart component
         const data = builds.map(build => ({
@@ -55,7 +57,7 @@ class JobBuildsHistogram extends Component {
         return (
             <div>
                 <div className="widget__header">
-                    <span className="widget__header__subject">{title}</span> builds
+                    Jenkins <span className="widget__header__subject">{title}</span> builds
                     <i className="fa fa-bug"/>
                 </div>
                 <div className="widget__body">

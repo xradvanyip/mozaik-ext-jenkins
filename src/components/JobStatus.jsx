@@ -5,6 +5,7 @@ import { ListenerMixin }               from 'reflux';
 import Mozaik                          from 'mozaik/browser';
 import { getBuildStatus }              from './util';
 import JobStatusPreviousBuild          from './JobStatusPreviousBuild.jsx';
+import jenkinsUtil                      from './../common/jenkins-util';
 
 
 class JobStatus extends Component {
@@ -17,9 +18,14 @@ class JobStatus extends Component {
     getApiRequest() {
         const { job, layout } = this.props;
 
+        const jobApiURLpart = jenkinsUtil.fitApiURL(job);
+
         return {
             id:     `jenkins.job.${job}`,
-            params: { job, layout }
+            params: { 
+                job: jobApiURLpart,
+                layout
+            }
         };
     }
 
@@ -36,7 +42,15 @@ class JobStatus extends Component {
         let statusClasses;
         let iconClasses;
 
-        const finalTitle = title || `Jenkins job ${ job }`;
+        const finalTitle = title ? (
+            <span>{title}</span>
+        ) : (
+            <span>
+                <span>Jenkins job&nbsp;</span>
+                <wbr />
+                <span className="widget__header__subject" >{ layout === 'bold' ? job : jenkinsUtil.getShortJobName(job) }</span>
+            </span>
+        );
 
         if (layout === 'bold') {
             if (builds.length > 0) {
