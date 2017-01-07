@@ -27,10 +27,11 @@ class Jobs extends Component {
 
         if(job && jenkinsUtil.containsDirPart(job)) {
             const jobFolderPart = jenkinsUtil.getFolderPart(job);
+            const jobFolder = jenkinsUtil.fitApiURL(jobFolderPart);
 
             return {
                 id: 'jenkins.jobsOfFolder',
-                params: { jobFolderPart }
+                params: { jobFolder }
             };
         }
 

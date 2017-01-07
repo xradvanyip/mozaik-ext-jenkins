@@ -16,9 +16,11 @@ class JobBuilds extends Component {
     getApiRequest() {
         const { job } = this.props;
 
+        const jobApiURLpart = jenkinsUtil.fitApiURL(job);
+
         return {
             id:     `jenkins.job.${job}`,
-            params: { job }
+            params: { job: jobApiURLpart }
         };
     }
 

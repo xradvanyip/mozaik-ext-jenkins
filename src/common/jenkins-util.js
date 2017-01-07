@@ -21,15 +21,6 @@ const jenkinsUtil = {
       return '';
     }
     return jobName.substring(0, lastSlash);
-  },
-
-  // need jsx format...
-  wbr: jobName => {
-    const tokens = jobName.split('/');
-
-    let element;
-
-
   }
 }
 
