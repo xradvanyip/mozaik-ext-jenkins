@@ -7,7 +7,7 @@ const jenkinsUtil = {
   },
 
   fitApiURL: jobName => {
-    return jobName.replace(/[\/]/,'/job/');
+    return jobName.replace(/[\/]/g,'/job/');
   },
 
   getShortJobName: jobName => {
