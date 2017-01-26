@@ -47,8 +47,8 @@ class JobStatus extends Component {
         ) : (
             <span>
                 <span>Jenkins job&nbsp;</span>
-                <wbr />
-                <span className="widget__header__subject" >{ layout === 'bold' ? job : jenkinsUtil.getShortJobName(job) }</span>
+                <br />
+                <span className="widget__header__subject" >{ layout === 'bold' ? jenkinsUtil.getShortJobSpaceEscaped(job) : jenkinsUtil.getShortJobName(job) }</span>
             </span>
         );
 
