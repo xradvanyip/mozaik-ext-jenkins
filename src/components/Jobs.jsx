@@ -30,7 +30,7 @@ class Jobs extends Component {
             const jobFolder = jenkinsUtil.fitApiURL(jobFolderPart);
 
             return {
-                id: 'jenkins.jobsOfFolder',
+                id: `jenkins.jobsOfFolder.${job}`,
                 params: { jobFolder }
             };
         }
