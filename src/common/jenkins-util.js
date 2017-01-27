@@ -1,4 +1,3 @@
-
 'use strict';
 
 const jenkinsUtil = {
@@ -7,12 +6,18 @@ const jenkinsUtil = {
   },
 
   fitApiURL: jobName => {
-    return jobName.replace(/[\/]/,'/job/');
+    return jobName.replace(/[\/]/g,'/job/');
   },
 
   getShortJobName: jobName => {
     const tokens = jobName.split('/');
     return tokens[tokens.length - 1];
+  },
+
+  getShortJobSpaceEscaped: jobName => {
+    const short = jenkinsUtil.getShortJobName(jobName);
+    console.log(short);
+    return jenkinsUtil.getShortJobName(jobName).replace(/-/g, ' ');
   },
 
   getFolderPart: jobName => {

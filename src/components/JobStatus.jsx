@@ -47,8 +47,8 @@ class JobStatus extends Component {
         ) : (
             <span>
                 <span>Jenkins job&nbsp;</span>
-                <wbr />
-                <span className="widget__header__subject" >{ layout === 'bold' ? job : jenkinsUtil.getShortJobName(job) }</span>
+                <br />
+                <span className="widget__header__subject" >{ layout === 'bold' ? jenkinsUtil.getShortJobSpaceEscaped(job) : jenkinsUtil.getShortJobName(job) }</span>
             </span>
         );
 
@@ -66,8 +66,9 @@ class JobStatus extends Component {
                         Build #{currentBuild.number}<br />
                         <a className="jenkins__job-status__current__status" href={currentBuild.url}>
                             {finalTitle}&nbsp;
-                            <i className={iconClasses}/>
-                        </a><br/>
+                            <br />
+                            <i className={iconClasses}/>&nbsp;
+                        </a>
                         <time className="jenkins__job-status__current__time">
                             <i className="fa fa-clock-o"/>&nbsp;
                             {moment(currentBuild.timestamp, 'x').fromNow()}

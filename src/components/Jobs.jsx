@@ -18,7 +18,7 @@ class Jobs extends Component {
         const { job } = props;
 
         if(job && jenkinsUtil.containsDirPart(job)) {
-            this.state.title = `${jenkinsUtil.getFolderPart(job)}/`;    // this.setState() would cause unnecessry re-render
+            this.state.title = `${jenkinsUtil.getFolderPart(job)}`;    // this.setState() would cause unnecessry re-render
         }
     }
 
