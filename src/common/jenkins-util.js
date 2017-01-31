@@ -16,7 +16,6 @@ const jenkinsUtil = {
 
   getShortJobSpaceEscaped: jobName => {
     const short = jenkinsUtil.getShortJobName(jobName);
-    console.log(short);
     return jenkinsUtil.getShortJobName(jobName).replace(/-/g, ' ');
   },
 
