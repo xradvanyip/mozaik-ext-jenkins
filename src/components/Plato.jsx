@@ -29,7 +29,6 @@ class Plato extends Component {
   }
 
   onApiData(data) {
-    console.log(data);
       this.setState({ avgMaintainability: data.avgMaintainability,
                       avgComplexity: data.avgComplexity,
                       worstMaintainability: data.worstMaintainability,
