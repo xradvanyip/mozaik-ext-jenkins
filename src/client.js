@@ -3,6 +3,7 @@ import config  from './config';
 import Promise from 'bluebird';
 import chalk   from 'chalk';
 import fs      from 'fs';
+import _ from 'lodash';
 require('superagent-bluebird-promise');
 
 
@@ -34,7 +35,7 @@ const client = mozaik => {
         }
     }
 
-    function buildRequest(path) {
+    const buildRequest = (path) => {
         const url = config.get('jenkins.baseUrl') + path;
         let req = request.get(url);
 
@@ -55,7 +56,54 @@ const client = mozaik => {
                 throw error;
             })
         ;
-    }
+    };
+
+    const calculateMetrics = (data) => {
+        const report = data.reports;
+        let avgM = parseFloat(data.summary.average.maintainability);
+        let avgC = 0;
+        let worstM = report[0].complexity.maintainability;
+        let worstC = report[0].complexity.methodAggregate.cyclomatic;
+
+        for (let i in report) {
+            avgC += report[i].complexity.methodAggregate.cyclomatic;
+            if (report[i].complexity.maintainability < worstM) worstM = report[i].complexity.maintainability;
+            if (report[i].complexity.methodAggregate.cyclomatic > worstC) worstC = report[i].complexity.methodAggregate.cyclomatic;
+        }
+        avgC /= report.length;
+        return {
+            avgMaintainability: avgM,
+            avgComplexity: avgC,
+            worstMaintainability: worstM,
+            worstComplexity: worstC
+        }
+    };
+
+    const calculateMetricsAverage = (params, metrics) => {
+
+        let promises = [];
+        const jobs = params.jobs;
+
+        _.each(jobs, (job) => {
+            const metrcisDataPromise = buildRequest(`/job/${ params.folder}/job/${ job }/ws/plato_reports/report.json`)
+                .then((res) => {
+                    return calculateMetrics(res.body)
+                })
+            promises.push(metrcisDataPromise);
+        });
+
+        return Promise.all(promises).then(values => {
+
+            const metricsValues = [];
+
+            _.each(values, (value) => {
+                metricsValues.push(value[metrics]);
+            })
+            const average = _.sum(metricsValues) / metricsValues.length;
+            return _.round(average, 2);
+        });
+
+    };
 
     const apiMethods = {
         jobs() {
@@ -113,26 +161,18 @@ const client = mozaik => {
         },
 
         platoReport(params) {
-          return buildRequest(`/job/${ params.job }/ws/plato_reports/report.json`)
-              .then(res => {
-                const report = res.body.reports;
-                let avgM = res.body.summary.average.maintainability;
-                let avgC = 0;
-                let worstM = report[0].complexity.maintainability;
-                let worstC = report[0].complexity.methodAggregate.cyclomatic;
+            return buildRequest(`/job/${ params.job }/ws/plato_reports/report.json`)
+                .then(res => {
+                    return calculateMetrics(res.body)
+                });
+        },
 
-                for (let i in report) {
-                  avgC += report[i].complexity.methodAggregate.cyclomatic;
-                  if (report[i].complexity.maintainability < worstM) worstM = report[i].complexity.maintainability;
-                  if (report[i].complexity.methodAggregate.cyclomatic > worstC) worstC = report[i].complexity.methodAggregate.cyclomatic;
-                }
-                avgC /= report.length;
-                return { avgMaintainability: avgM,
-                         avgComplexity: avgC,
-                         worstMaintainability: worstM,
-                         worstComplexity: worstC }
-              })
-          ;
+        platoComplexityAverage(params) {
+            return calculateMetricsAverage(params, 'avgComplexity');
+        },
+
+        platoMaintainabilityAverage(params) {
+            return calculateMetricsAverage(params, 'avgMaintainability');
         }
     };
 
