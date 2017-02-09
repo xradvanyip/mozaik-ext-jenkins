@@ -38,7 +38,7 @@ class PlatoMaintainabilityAverage extends Component {
         const { job, title } = this.props;
         const { avgMaintainability } = this.state;
 
-        const acStatusClass = `jenkins__plato-status__average-value jenkins__plato-status__average-value--${ jenkinsUtil.getComplexityThreshold(avgMaintainability) }`;
+        const acStatusClass = `jenkins__plato-status__average-value jenkins__plato-status__average-value--${ jenkinsUtil.getMaintainabilityThreshold(avgMaintainability) }`;
 
         return (
             <div>

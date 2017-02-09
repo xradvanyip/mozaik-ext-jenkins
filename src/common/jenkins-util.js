@@ -26,17 +26,17 @@ const jenkinsUtil = {
     return jobName.substring(0, lastSlash);
   },
 
-  getMaintabilityThreshold: value => {
-    if (value < 10) return "red";
-    if (value < 20) return "yellow";
+  getMaintainabilityThreshold: value => {
+    if (value < 50) return "red";
+    if (value < 80) return "yellow";
     return "green";
   },
 
   getComplexityThreshold: value => {
-    if (value > 20) return "red";
-    if (value > 10) return "yellow";
+    if (value > 10) return "red";
+    if (value > 5) return "yellow";
     return "green";
   }
-}
+};
 
 export default jenkinsUtil;
