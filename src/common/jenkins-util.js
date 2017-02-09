@@ -2,7 +2,8 @@
 
 const jenkinsUtil = {
   containsDirPart: jobName => {
-    return jobName.includes('/');
+    // return jobName.includes('/');  // IE11 does not implement includes
+    return jobName.indexOf('/') >= 0;
   },
 
   fitApiURL: jobName => {
