@@ -16,7 +16,6 @@ const jenkinsUtil = {
   },
 
   getShortJobSpaceEscaped: jobName => {
-    const short = jenkinsUtil.getShortJobName(jobName);
     return jenkinsUtil.getShortJobName(jobName).replace(/-/g, ' ');
   },
 
@@ -26,6 +25,18 @@ const jenkinsUtil = {
       return '';
     }
     return jobName.substring(0, lastSlash);
+  },
+
+  getMaintabilityThreshold: value => {
+    if (value < 10) return "red";
+    if (value < 20) return "yellow";
+    return "green";
+  },
+
+  getComplexityThreshold: value => {
+    if (value > 20) return "red";
+    if (value > 10) return "yellow";
+    return "green";
   }
 }
 

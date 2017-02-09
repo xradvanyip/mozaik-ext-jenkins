@@ -110,6 +110,29 @@ const client = mozaik => {
                     ;
                 })
             ;
+        },
+
+        platoReport(params) {
+          return buildRequest(`/job/${ params.job }/ws/plato_reports/report.json`)
+              .then(res => {
+                const report = res.body.reports;
+                let avgM = res.body.summary.average.maintainability;
+                let avgC = 0;
+                let worstM = report[0].complexity.maintainability;
+                let worstC = report[0].complexity.methodAggregate.cyclomatic;
+
+                for (let i in report) {
+                  avgC += report[i].complexity.methodAggregate.cyclomatic;
+                  if (report[i].complexity.maintainability < worstM) worstM = report[i].complexity.maintainability;
+                  if (report[i].complexity.methodAggregate.cyclomatic > worstC) worstC = report[i].complexity.methodAggregate.cyclomatic;
+                }
+                avgC /= report.length;
+                return { avgMaintainability: avgM,
+                         avgComplexity: avgC,
+                         worstMaintainability: worstM,
+                         worstComplexity: worstC }
+              })
+          ;
         }
     };
 

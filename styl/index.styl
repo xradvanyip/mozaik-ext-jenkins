@@ -59,6 +59,9 @@
         &--success
           color $success-color
 
+        &--warning
+          color $warning-color
+
         &--failure
           color $failure-color
 
@@ -75,6 +78,23 @@
       padding 0 15px
       font-size 13px
       color darken($main-txt-color, 20)
+
+  &__plato-status
+   margin-top 10px
+   text-align center
+   font-size 24px
+   display block
+   width 100%
+   &__report
+    font-size 18px
+    &--green
+      color $success-color
+
+    &--yellow
+      color $warning-color
+
+    &--red
+      color $failure-color
 
 .widget
   &__body
