@@ -37,6 +37,12 @@ const jenkinsUtil = {
     if (value > 10) return "red";
     if (value > 5) return "yellow";
     return "green";
+  },
+
+  getCoverageThreshold: value => {
+    if (value < 80) return "red";
+    if (value < 90) return "yellow";
+    return "green";
   }
 };
 

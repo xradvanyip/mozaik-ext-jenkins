@@ -5,12 +5,12 @@ import Mozaik                          from 'mozaik/browser';
 import jenkinsUtil                      from './../common/jenkins-util';
 
 
-class PlatoComplexityAverage extends Component {
+class CoverageAverage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            avgComplexity: 0,
+            avgCoverage: 0,
         };
     }
 
@@ -20,7 +20,7 @@ class PlatoComplexityAverage extends Component {
         const folderApiURLpart = jenkinsUtil.fitApiURL(folder);
 
         return {
-            id: `jenkins.platoComplexityAverage.${folder}`,
+            id: `jenkins.coverageAverage.${folder}`,
             params: {
                 jobs: jobs,
                 folder: folderApiURLpart,
@@ -30,15 +30,15 @@ class PlatoComplexityAverage extends Component {
 
     onApiData(data) {
         this.setState({
-            avgComplexity: data,
+            avgCoverage: data,
         });
     }
 
     render() {
         const { job, title } = this.props;
-        const { avgComplexity } = this.state;
+        const { avgCoverage } = this.state;
 
-        const acStatusClass = `jenkins__plato-status__average-value jenkins__plato-status__average-value--${ jenkinsUtil.getComplexityThreshold(avgComplexity) }`;
+        const acStatusClass = `jenkins__coverage-status__average-value jenkins__coverage-status__average-value--${ jenkinsUtil.getCoverageThreshold(avgCoverage) }`;
 
         return (
             <div>
@@ -46,10 +46,10 @@ class PlatoComplexityAverage extends Component {
                     <span className="widget__header__subject">{title}</span>
                     <i className="fa fa-heartbeat"/>
                 </div>
-                <div className="jenkins__plato-status">
-                    <span className="jenkins__plato-status jenkins__plato-status__title">Complexity</span>
-                    <div className="jenkins__plato-status__average-value">
-                        <span className={acStatusClass}>{avgComplexity}</span>
+                <div className="jenkins__coverage-status">
+                    <span className="jenkins__coverage-status jenkins__coverage-status__title">Coverage</span>
+                    <div className="jenkins__coverage-status__average-value">
+                        <span className={acStatusClass}>{avgCoverage}</span>
                     </div>
                 </div>
             </div>
@@ -57,16 +57,16 @@ class PlatoComplexityAverage extends Component {
     }
 }
 
-PlatoComplexityAverage.displayName = 'PlatoComplexityAverage';
+CoverageAverage.displayName = 'CoverageAverage';
 
-PlatoComplexityAverage.propTypes = {
+CoverageAverage.propTypes = {
     jobs: PropTypes.string.isRequired,
     folder: PropTypes.string.isRequired,
     title: PropTypes.string
 };
 
-reactMixin(PlatoComplexityAverage.prototype, ListenerMixin);
-reactMixin(PlatoComplexityAverage.prototype, Mozaik.Mixin.ApiConsumer);
+reactMixin(CoverageAverage.prototype, ListenerMixin);
+reactMixin(CoverageAverage.prototype, Mozaik.Mixin.ApiConsumer);
 
 
-export default PlatoComplexityAverage;
+export default CoverageAverage;

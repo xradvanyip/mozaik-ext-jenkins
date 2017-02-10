@@ -57,11 +57,11 @@ class PlatoMaintainabilityAverage extends Component {
     }
 }
 
-PlatoMaintainabilityAverage.displayName = 'PlatoComplexityAverage';
+PlatoMaintainabilityAverage.displayName = 'PlatoMaintainabilityAverage';
 
 PlatoMaintainabilityAverage.propTypes = {
     jobs: PropTypes.string.isRequired,
-    folders: PropTypes.string.isRequired,
+    folder: PropTypes.string.isRequired,
     title: PropTypes.string
 };
 

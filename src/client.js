@@ -105,6 +105,27 @@ const client = mozaik => {
 
     };
 
+    const calculateCoverageAverage = (params) => {
+
+        let promises = [];
+        const jobs = params.jobs;
+
+        _.each(jobs, (job) => {
+            const dataPromise = buildRequest(`/job/${ params.folder}/job/${ job }/ws/coverage/coverage.json`)
+                .then((res) => {
+                    return res.body.coverage.percent
+                })
+            promises.push(dataPromise);
+        });
+
+        return Promise.all(promises).then(values => {
+
+            const average = _.sum(values) / values.length;
+            return _.round(average, 2);
+        });
+
+    };
+
     const apiMethods = {
         jobs() {
             return buildRequest('/api/json?tree=jobs[name,lastBuild[number,building,timestamp,result]]&pretty=true')
@@ -173,6 +194,10 @@ const client = mozaik => {
 
         platoMaintainabilityAverage(params) {
             return calculateMetricsAverage(params, 'avgMaintainability');
+        },
+
+        coverageAverage(params) {
+            return calculateCoverageAverage(params);
         }
     };
 

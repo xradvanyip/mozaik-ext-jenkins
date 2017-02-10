@@ -6,6 +6,7 @@ import View               from './View.jsx';
 import Plato              from './Plato.jsx';
 import PlatoComplexityAverage from './PlatoComplexityAverage.jsx';
 import PlatoMaintainabilityAverage from './PlatoMaintainabilityAverage.jsx';
+import CoverageAverage from './CoverageAverage.jsx';
 
 
 export default {
@@ -16,5 +17,6 @@ export default {
     View,
     Plato,
     PlatoComplexityAverage,
-    PlatoMaintainabilityAverage
+    PlatoMaintainabilityAverage,
+    CoverageAverage
 };
