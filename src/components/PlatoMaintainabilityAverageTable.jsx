@@ -5,7 +5,7 @@ import Mozaik                          from 'mozaik/browser';
 import jenkinsUtil                     from './../common/jenkins-util';
 import moment                          from 'moment';
 
-class PlatoComplexityAverageTable extends Component {
+class PlatoMaintainabilityAverageTable extends Component {
     constructor(props) {
         super(props);
 
@@ -20,7 +20,7 @@ class PlatoComplexityAverageTable extends Component {
         const folderApiURLpart = jenkinsUtil.fitApiURL(folder);
 
         return {
-            id: `jenkins.platoComplexityAverage.${folder}`,
+            id: `jenkins.platoMaintainabilityAverage.${folder}`,
             params: {
                 jobs: jobs,
                 folder: folderApiURLpart,
@@ -82,7 +82,7 @@ class PlatoComplexityAverageTable extends Component {
                         {entry.data}
                         {
                             previousData
-                            ? entry.data > previousData
+                            ? entry.data < previousData
                                 ? <i className="fa fa-caret-up jenkins__plato-table__icon jenkins__plato-table__icon-worsen"/>
                                 : <i className="fa fa-caret-down jenkins__plato-table__icon jenkins__plato-table__icon-better"/>
                             : <span />
@@ -110,16 +110,16 @@ class PlatoComplexityAverageTable extends Component {
     }
 }
 
-PlatoComplexityAverageTable.displayName = 'PlatoComplexityAverageTable';
+PlatoMaintainabilityAverageTable.displayName = 'PlatoMaintainabilityAverageTable';
 
-PlatoComplexityAverageTable.propTypes = {
+PlatoMaintainabilityAverageTable.propTypes = {
     jobs: PropTypes.string.isRequired,
     folder: PropTypes.string.isRequired,
     title: PropTypes.string
 };
 
-reactMixin(PlatoComplexityAverageTable.prototype, ListenerMixin);
-reactMixin(PlatoComplexityAverageTable.prototype, Mozaik.Mixin.ApiConsumer);
+reactMixin(PlatoMaintainabilityAverageTable.prototype, ListenerMixin);
+reactMixin(PlatoMaintainabilityAverageTable.prototype, Mozaik.Mixin.ApiConsumer);
 
 
-export default PlatoComplexityAverageTable;
+export default PlatoMaintainabilityAverageTable;

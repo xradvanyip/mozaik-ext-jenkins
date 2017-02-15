@@ -4,8 +4,9 @@ import { ListenerMixin }               from 'reflux';
 import Mozaik                          from 'mozaik/browser';
 import jenkinsUtil                     from './../common/jenkins-util';
 import moment                          from 'moment';
+import { default as BarChart }         from './historyChart/BarChart.jsx';
 
-class PlatoComplexityAverageTable extends Component {
+class PlatoMaintainabilityAverageChart extends Component {
     constructor(props) {
         super(props);
 
@@ -20,7 +21,7 @@ class PlatoComplexityAverageTable extends Component {
         const folderApiURLpart = jenkinsUtil.fitApiURL(folder);
 
         return {
-            id: `jenkins.platoComplexityAverage.${folder}`,
+            id: `jenkins.platoMaintainabilityAverage.${folder}`,
             params: {
                 jobs: jobs,
                 folder: folderApiURLpart,
@@ -68,58 +69,50 @@ class PlatoComplexityAverageTable extends Component {
     }
 
     render() {
-        const { job, title } = this.props;
+        const { title } = this.props;
         const { history } = this.state;
 
-        let rows = [];
-        let previousData = null
+        // converts to format required by BarChart component
+        const data = history.map(entry => ({
+            x:      entry.timestamp.format('H:mm:ss;MMM D;YYYY'),
+            y:      entry.data,
+            change: entry.data > 0 ? 'success' : 'failure'  // may compare with previous value, decide color
+        }));
 
-        history.forEach((entry) => {
-            rows.unshift(
-                (<div className="jenkins__plato-table__row">
-                    <div className="jenkins__plato-table__timestamp">{entry.timestamp.format('YYYY MMM D, H:mm:ss')}</div>
-                    <div className="jenkins__plato-table__value">
-                        {entry.data}
-                        {
-                            previousData
-                            ? entry.data > previousData
-                                ? <i className="fa fa-caret-up jenkins__plato-table__icon jenkins__plato-table__icon-worsen"/>
-                                : <i className="fa fa-caret-down jenkins__plato-table__icon jenkins__plato-table__icon-better"/>
-                            : <span />
-                        }
-                    </div>
-                </div>)
-            );
-            previousData = entry.data;
-        })
+        const barChartOptions = {
+            mode:            'stacked',
+            xLegend:         'date',
+            xLegendPosition: 'right',
+            yLegend:         'maintainability',
+            yLegendPosition: 'top',
+            xPadding:        0.3,
+            barClass:        d => `result--${ d.change }`
+        };
+
         return (
             <div>
                 <div className="widget__header">
-                    <span className="widget__header__subject">{title}</span>
+                    {title}
                     <i className="fa fa-line-chart"/>
                 </div>
                 <div className="widget__body">
-                    <div className="jenkins__plato-table__row jenkins__plato-table__header">
-                        <div className="jenkins__plato-table__header__timestamp">Observed</div>
-                        <div className="jenkins__plato-table__header__value">Avg.</div>
-                    </div>
-                        {rows}
+                    <BarChart data={[{ data: data }]} options={barChartOptions}/>
                 </div>
             </div>
         );
     }
 }
 
-PlatoComplexityAverageTable.displayName = 'PlatoComplexityAverageTable';
+PlatoMaintainabilityAverageChart.displayName = 'PlatoMaintainabilityAverageChart';
 
-PlatoComplexityAverageTable.propTypes = {
+PlatoMaintainabilityAverageChart.propTypes = {
     jobs: PropTypes.string.isRequired,
     folder: PropTypes.string.isRequired,
     title: PropTypes.string
 };
 
-reactMixin(PlatoComplexityAverageTable.prototype, ListenerMixin);
-reactMixin(PlatoComplexityAverageTable.prototype, Mozaik.Mixin.ApiConsumer);
+reactMixin(PlatoMaintainabilityAverageChart.prototype, ListenerMixin);
+reactMixin(PlatoMaintainabilityAverageChart.prototype, Mozaik.Mixin.ApiConsumer);
 
 
-export default PlatoComplexityAverageTable;
+export default PlatoMaintainabilityAverageChart;

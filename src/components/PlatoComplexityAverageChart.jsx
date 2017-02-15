@@ -4,7 +4,7 @@ import { ListenerMixin }               from 'reflux';
 import Mozaik                          from 'mozaik/browser';
 import jenkinsUtil                     from './../common/jenkins-util';
 import moment                          from 'moment';
-import { default as BarChart }         from './charts/BarChart.jsx';
+import { default as BarChart }         from './historyChart/BarChart.jsx';
 
 class PlatoComplexityAverageChart extends Component {
     constructor(props) {
@@ -30,8 +30,6 @@ class PlatoComplexityAverageChart extends Component {
     }
 
     onApiData(data) {
-        console.log('ComplexityAvgH ', JSON.stringify(data));
-
         const newHistory = this.makeHistory(data);
 
         this.setState({
