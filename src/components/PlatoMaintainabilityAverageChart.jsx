@@ -74,9 +74,9 @@ class PlatoMaintainabilityAverageChart extends Component {
 
         // converts to format required by BarChart component
         const data = history.map(entry => ({
-            x:      entry.timestamp.format('H:mm:ss;MMM D;YYYY'),
-            y:      entry.data,
-            change: entry.data > 0 ? 'success' : 'failure'  // may compare with previous value, decide color
+            x:        entry.timestamp.format('H:mm:ss;MMM D;YYYY'),
+            y:        entry.data,
+            cssClass: `jenkins__plato-graph__fill--${ jenkinsUtil.getMaintainabilityThreshold(entry.data) }`
         }));
 
         const barChartOptions = {
@@ -86,7 +86,7 @@ class PlatoMaintainabilityAverageChart extends Component {
             yLegend:         'maintainability',
             yLegendPosition: 'top',
             xPadding:        0.3,
-            barClass:        d => `result--${ d.change }`
+            barClass:        d => d.cssClass
         };
 
         return (

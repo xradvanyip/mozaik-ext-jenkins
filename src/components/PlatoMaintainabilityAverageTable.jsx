@@ -75,16 +75,18 @@ class PlatoMaintainabilityAverageTable extends Component {
         let previousData = null
 
         history.forEach((entry) => {
+            const amStatusClass = `jenkins__plato-status__average-value--${ jenkinsUtil.getMaintainabilityThreshold(entry.data) }`;
+
             rows.unshift(
                 (<div className="jenkins__plato-table__row">
                     <div className="jenkins__plato-table__timestamp">{entry.timestamp.format('YYYY MMM D, H:mm:ss')}</div>
                     <div className="jenkins__plato-table__value">
-                        {entry.data}
+                        <span className={amStatusClass}>{entry.data}</span>
                         {
                             previousData
                             ? entry.data < previousData
-                                ? <i className="fa fa-caret-up jenkins__plato-table__icon jenkins__plato-table__icon-worsen"/>
-                                : <i className="fa fa-caret-down jenkins__plato-table__icon jenkins__plato-table__icon-better"/>
+                                ? <i className="fa fa-caret-down jenkins__plato-table__icon jenkins__plato-table__icon-worsen"/>
+                                : <i className="fa fa-caret-up jenkins__plato-table__icon jenkins__plato-table__icon-better"/>
                             : <span />
                         }
                     </div>

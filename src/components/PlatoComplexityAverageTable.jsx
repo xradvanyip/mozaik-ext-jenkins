@@ -75,11 +75,13 @@ class PlatoComplexityAverageTable extends Component {
         let previousData = null
 
         history.forEach((entry) => {
+            const acStatusClass = `jenkins__plato-status__average-value--${ jenkinsUtil.getComplexityThreshold(entry.data) }`;
+
             rows.unshift(
                 (<div className="jenkins__plato-table__row">
                     <div className="jenkins__plato-table__timestamp">{entry.timestamp.format('YYYY MMM D, H:mm:ss')}</div>
                     <div className="jenkins__plato-table__value">
-                        {entry.data}
+                        <span className={acStatusClass}>{entry.data}</span>
                         {
                             previousData
                             ? entry.data > previousData
