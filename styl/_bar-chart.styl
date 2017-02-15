@@ -1,0 +1,48 @@
+// should be in mozaik
+$main-txt-color                    = default('$main-txt-color', #555)
+
+// CHARTS
+$chart-elements-color              = default('$chart-elements-color', $main-txt-color)
+$histogram-bar-bg-color            = default('$histogram-bar-bg-color', $chart-elements-color)
+$chart-axis-txt-color              = default('$chart-axis-txt-color', $chart-elements-color)
+$chart-tick-txt-size               = default('$chart-tick-txt-size', 1.2vmin)
+$chart-axis-tick-color             = default('$chart-axis-tick-color', $chart-elements-color)
+$chart-grid-line-color             = default('$chart-grid-line-color', $chart-elements-color)
+
+.bar-chart
+  &_wrapper
+    width  100%
+    height 100%
+
+  &_axis
+    &_legend
+      font-size $chart-tick-txt-size
+      fill $chart-axis-txt-color
+      font-family Helvetica sans-serif
+
+    text
+      font-size $chart-tick-txt-size
+      fill $chart-axis-txt-color
+
+    line
+      fill none
+      stroke $chart-axis-tick-color
+      shape-rendering crispEdges
+
+    path
+      display none
+
+    &--x
+      font-family Helvetica sans-serif
+
+    &--y
+      font-family Helvetica sans-serif
+      .tick
+        line
+          stroke $chart-grid-line-color
+          stroke-dasharray 1 2
+          stroke-width 1px
+
+        &:first-child
+          line
+            display none

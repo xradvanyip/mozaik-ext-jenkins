@@ -1,15 +1,16 @@
 @require "_view.styl"
+@require "_bar-chart.styl"
 
 .jenkins
   &__job-builds_histogram
-  .result--unknown
-    fill $unknown-color
-  .result--aborted
-    fill $unknown-color
-  .result--success
-    fill $success-color
-  .result--failure
-    fill $failure-color
+    .result--unknown
+      fill $unknown-color
+    .result--aborted
+      fill $unknown-color
+    .result--success
+      fill $success-color
+    .result--failure
+      fill $failure-color
 
   &__job
     position relative

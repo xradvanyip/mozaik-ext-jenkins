@@ -7,7 +7,8 @@ import Plato              from './Plato.jsx';
 import PlatoComplexityAverage from './PlatoComplexityAverage.jsx';
 import PlatoMaintainabilityAverage from './PlatoMaintainabilityAverage.jsx';
 import CoverageAverage from './CoverageAverage.jsx';
-
+import PlatoComplexityAverageTable from './PlatoComplexityAverageTable.jsx';
+import PlatoComplexityAverageChart from './PlatoComplexityAverageChart.jsx';
 
 export default {
     Jobs,
@@ -18,5 +19,7 @@ export default {
     Plato,
     PlatoComplexityAverage,
     PlatoMaintainabilityAverage,
+    PlatoComplexityAverageTable,
+    PlatoComplexityAverageChart,
     CoverageAverage
 };
