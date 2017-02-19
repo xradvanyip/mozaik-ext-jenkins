@@ -156,7 +156,7 @@ class BarChart {
             for (let i = 0; i < words.length; i++) {
                 let tspan = el.append('tspan').text(words[i]);
                 if (i > 0)
-                    tspan.attr('x', 0).attr('dy', '15');
+                    tspan.attr('x', 0).attr('dy', '1.35vmin');
             }
         };
 
@@ -170,7 +170,7 @@ class BarChart {
                 break;
 
             case 'right':
-                this.xAxisLegend.attr('transform', `translate(${ margin.left + innerWidth },${ margin.top + innerHeight + 45 })`);
+                this.xAxisLegend.attr('transform', `translate(${ margin.left + innerWidth },${ margin.top + innerHeight + 10 })`);
                 break;
 
             default:

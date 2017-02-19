@@ -20,7 +20,7 @@ class PlatoMaintainabilityAverageTable extends Component {
         const folderApiURLpart = jenkinsUtil.fitApiURL(folder);
 
         return {
-            id: `jenkins.platoMaintainabilityAverage.${folder}`,
+            id: `jenkins.platoMaintainabilityAverageHistory.${folder}`,
             params: {
                 jobs: jobs,
                 folder: folderApiURLpart,
@@ -28,47 +28,14 @@ class PlatoMaintainabilityAverageTable extends Component {
         };
     }
 
-    onApiData(data) {
-        const newHistory = this.makeHistory(data);
-
+    onApiData(newHistory) {
         this.setState({
             history: newHistory
         });
     }
 
-    makeHistory(entry) {
-        const { history } = this.state;
-        const historyLength = history.length;
-
-        if(historyLength === 0) {
-            let newHistory = [];
-            newHistory.push(this.newHistoryItem(entry));
-            return newHistory;
-        } else if(history[historyLength-1].data !== entry) {
-            let newHistory;
-
-            if(historyLength < 5)
-                newHistory = history.slice(0, historyLength);
-            else
-                newHistory = history.slice(1, historyLength);
-
-            newHistory.push(this.newHistoryItem(entry));
-            return newHistory;
-        } else
-            return history;
-    }
-
-    newHistoryItem(data) {
-        const now = moment();
-        const element = {
-            data,
-            timestamp: now
-        };
-        return element;
-    }
-
     render() {
-        const { job, title } = this.props;
+        const { title } = this.props;
         const { history } = this.state;
 
         let rows = [];
@@ -79,7 +46,7 @@ class PlatoMaintainabilityAverageTable extends Component {
 
             rows.unshift(
                 (<div className="jenkins__plato-table__row">
-                    <div className="jenkins__plato-table__timestamp">{entry.timestamp.format('YYYY MMM D, H:mm:ss')}</div>
+                    <div className="jenkins__plato-table__timestamp">{moment(entry.timestamp).format('YYYY MMM D, H:mm:ss')}</div>
                     <div className="jenkins__plato-table__value">
                         <span className={amStatusClass}>{entry.data}</span>
                         {

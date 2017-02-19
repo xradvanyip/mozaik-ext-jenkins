@@ -1,5 +1,6 @@
 import request from 'superagent';
 import config  from './config';
+import moment  from 'moment';
 import Promise from 'bluebird';
 import chalk   from 'chalk';
 import fs      from 'fs';
@@ -21,6 +22,9 @@ const viewBuildTypes = [
  * @returns {Object}
  */
 const client = mozaik => {
+
+    let averageComplexityHistory = [];
+    let averageMaintainabilityHistory = [];
 
     mozaik.loadApiConfig(config);
     const caFilePath = config.get('jenkins.customCa');
@@ -126,6 +130,39 @@ const client = mozaik => {
 
     };
 
+    const newHistoryItem = (data) => {
+        const now = moment();
+
+        const element = {
+            data,
+            timestamp: now
+        };
+
+        return element;
+    }
+
+
+    const makeHistory = (history, entry) => {
+        const historyLength = history.length;
+
+        if (historyLength === 0) {
+            let newHistory = [];
+            newHistory.push(newHistoryItem(entry));
+            return newHistory;
+        } else if (history[historyLength-1].data !== entry) {
+            let newHistory;
+
+            if (historyLength < 5)
+                newHistory = history.slice(0, historyLength);
+            else
+                newHistory = history.slice(1, historyLength);
+
+            newHistory.push(newHistoryItem(entry));
+            return newHistory;
+        } else
+            return history;
+    }
+
     const apiMethods = {
         jobs() {
             return buildRequest('/api/json?tree=jobs[name,lastBuild[number,building,timestamp,result]]&pretty=true')
@@ -194,6 +231,22 @@ const client = mozaik => {
 
         platoMaintainabilityAverage(params) {
             return calculateMetricsAverage(params, 'avgMaintainability');
+        },
+
+        platoComplexityAverageHistory(params) {
+            return calculateMetricsAverage(params, 'avgComplexity')
+            .then((currentValue) => {
+                averageComplexityHistory = makeHistory(averageComplexityHistory, currentValue);
+                return averageComplexityHistory;
+            });
+        },
+
+        platoMaintainabilityAverageHistory(params) {
+            return calculateMetricsAverage(params, 'avgMaintainability')
+            .then((currentValue) => {
+                averageMaintainabilityHistory = makeHistory(averageMaintainabilityHistory, currentValue);
+                return averageMaintainabilityHistory;
+            });
         },
 
         coverageAverage(params) {

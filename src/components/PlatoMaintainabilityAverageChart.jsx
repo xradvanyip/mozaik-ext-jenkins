@@ -21,7 +21,7 @@ class PlatoMaintainabilityAverageChart extends Component {
         const folderApiURLpart = jenkinsUtil.fitApiURL(folder);
 
         return {
-            id: `jenkins.platoMaintainabilityAverage.${folder}`,
+            id: `jenkins.platoMaintainabilityAverageHistory.${folder}`,
             params: {
                 jobs: jobs,
                 folder: folderApiURLpart,
@@ -29,43 +29,10 @@ class PlatoMaintainabilityAverageChart extends Component {
         };
     }
 
-    onApiData(data) {
-        const newHistory = this.makeHistory(data);
-
+    onApiData(newHistory) {
         this.setState({
             history: newHistory
         });
-    }
-
-    makeHistory(entry) {
-        const { history } = this.state;
-        const historyLength = history.length;
-
-        if(historyLength === 0) {
-            let newHistory = [];
-            newHistory.push(this.newHistoryItem(entry));
-            return newHistory;
-        } else if(history[historyLength-1].data !== entry) {
-            let newHistory;
-
-            if(historyLength < 5)
-                newHistory = history.slice(0, historyLength);
-            else
-                newHistory = history.slice(1, historyLength);
-
-            newHistory.push(this.newHistoryItem(entry));
-            return newHistory;
-        } else
-            return history;
-    }
-
-    newHistoryItem(data) {
-        const now = moment();
-        const element = {
-            data,
-            timestamp: now
-        };
-        return element;
     }
 
     render() {
@@ -74,7 +41,7 @@ class PlatoMaintainabilityAverageChart extends Component {
 
         // converts to format required by BarChart component
         const data = history.map(entry => ({
-            x:        entry.timestamp.format('H:mm:ss;MMM D;YYYY'),
+            x:        moment(entry.timestamp).format('H:mm:ss;MMM D;YYYY'),
             y:        entry.data,
             cssClass: `jenkins__plato-graph__fill--${ jenkinsUtil.getMaintainabilityThreshold(entry.data) }`
         }));
