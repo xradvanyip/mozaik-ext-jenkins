@@ -54,7 +54,7 @@ class BarChart {
                 break;
 
             case 'right':
-                this.xAxisLegend.attr('text-anchor', 'end');
+                this.xAxisLegend.attr('text-anchor', 'middle');
                 break;
 
             default:
@@ -170,7 +170,7 @@ class BarChart {
                 break;
 
             case 'right':
-                this.xAxisLegend.attr('transform', `translate(${ margin.left + innerWidth },${ margin.top + innerHeight + 10 })`);
+                this.xAxisLegend.attr('transform', `translate(${ margin.left + innerWidth },${ margin.top + innerHeight + 45 })`);
                 break;
 
             default:
@@ -218,12 +218,6 @@ class BarChart {
             .attr('transform', `translate(${ margin.left },${ margin.top + innerHeight })`)
             .call(this.xAxis)
             .selectAll('text').each(insertLinebreaks)
-            // .selectAll("text")
-            // .attr("y", 0)
-            // .attr("x", 9)
-            // .attr("dy", ".35em")
-            // .attr("transform", "rotate(-30)")
-            // .style("text-anchor", "start");
         ;
 
         this.yAxisContainer
@@ -292,19 +286,6 @@ class BarChart {
         ;
     }
 }
-
-
-// var insertLinebreaks = function(d) {
-//     var el = d3.select(this);
-//     const words = d.split(' ');
-//     el.text('');
-
-//     for (let i = 0; i < words.length; i++) {
-//         var tspan = el.append('tspan').text(words[i]);
-//         if (i > 0)
-//             tspan.attr('x', 0).attr('dy', '10');
-//     }
-// };
 
 BarChart.MODE_STACKED = 'stacked';
 BarChart.MODE_PACKED  = 'packed';
