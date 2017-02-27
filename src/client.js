@@ -117,7 +117,7 @@ const client = mozaik => {
         _.each(jobs, (job) => {
             const dataPromise = buildRequest(`/job/${ params.folder}/job/${ job }/ws/coverage/coverage.json`)
                 .then((res) => {
-                    return res.body.coverage.percent
+                    return res.body.coverage ? res.body.coverage.percent /* for lab */ : res.body.total.statements.pct /* for istanbul */
                 })
             promises.push(dataPromise);
         });
