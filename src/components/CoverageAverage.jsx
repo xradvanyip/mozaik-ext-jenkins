@@ -49,7 +49,7 @@ class CoverageAverage extends Component {
                 <div className="jenkins__coverage-status">
                     <span className="jenkins__coverage-status jenkins__coverage-status__title">Coverage</span>
                     <div className="jenkins__coverage-status__average-value">
-                        <span className={acStatusClass}>{avgCoverage}</span>
+                        <span className={acStatusClass}>{avgCoverage} %</span>
                     </div>
                 </div>
             </div>

@@ -49,7 +49,7 @@ class PlatoMaintainabilityAverage extends Component {
                 <div className="jenkins__plato-status">
                     <span className="jenkins__plato-status jenkins__plato-status__title">Maintainability</span>
                     <div className="jenkins__plato-status__average-value">
-                        <span className={acStatusClass}>{avgMaintainability}</span>
+                        <span className={acStatusClass}>{avgMaintainability} %</span>
                     </div>
                 </div>
             </div>
